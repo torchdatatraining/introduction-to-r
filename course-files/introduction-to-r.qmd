@@ -1,0 +1,46 @@
+---
+title: "Introduction to R"
+author: "Neil Currie, Torch Data"
+format: html
+editor: visual
+---
+
+## Overview
+
+This is a Quarto document. This type of file allows you to weave text, code, tables, and charts together in a well formatted output. You can output a variety of file types including html and pdf. It has the file extension .qmd. This contrasts to the .R script file we saw previously which only contains code.
+
+The rest of this course will use the Quarto file.
+
+## Loading libraries
+
+We previously installed three packages: readr, dplyr and ggplot2. But what do they do?
+
+-   readr is a package for reading data into R
+-   dplyr is a package for manipulating data
+-   ggplot2 is a fantastic plotting library
+
+To load these libraries we use the library function. You will see some strange message below. This is telling us that dplyr has some functions which have the exact same name as some functions which were already present in R. Don't worry too much about this at the moment.
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+## Reading data with readr
+
+A key part of analysis is obtaining data. Inside the data folder I have placed a file XXX.csv. If you aren't familar with them, comma separated value (or CSV for short) files are one the most common data file types around. They are tabular, organised into rows and columns. Each entry is separated by a comma. You can open them in all sorts of programs including a text editor like notepad on windows or spreadsheet software like Excel. And we can use them in R.
+
+Before we read the data in we are going to change our working directory.
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+## Manipulating data with dplyr
+
+## Plotting data with ggplot2
+
+## Outputing data and charts
+
