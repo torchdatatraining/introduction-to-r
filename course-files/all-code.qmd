@@ -1,0 +1,145 @@
+---
+title: "Introduction to R"
+author: "Neil Currie, Torch Data"
+format: html
+editor: visual
+---
+
+## Overview
+
+This is a Quarto document. This type of file allows you to weave text, code, tables, and charts together in a well formatted output. You can output a variety of file types including html and pdf. It has the file extension .qmd. This contrasts to the .R script file we saw previously which only contains code.
+
+The rest of this course will use the Quarto file.
+
+## Loading libraries
+
+We previously installed three packages: readr, dplyr and ggplot2. But what do they do?
+
+-   readr is a package for reading data into R
+-   dplyr is a package for manipulating data
+-   ggplot2 is a fantastic plotting library
+
+To load these libraries we use the library function. You will see some strange message below. This is telling us that dplyr has some functions which have the exact same name as some functions which were already present in R. Don't worry too much about this at the moment.
+
+```{r}
+library(here)
+library(readr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+## Reading data with readr
+
+A key part of analysis is obtaining data.
+
+Inside the data folder I have placed two data files `gdp.csv` and `population.csv`
+
+If you aren't familar with them, comma separated value (or CSV for short) files are one the most common data file types around. They are tabular, organised into rows and columns. Each entry is separated by a comma. You can open them in all sorts of programs including a text editor like notepad on windows or spreadsheet software like Excel.
+
+And we can use them in R.
+
+Our first mission is to figure out the full names of these files. You could do this manually by navigating to the file in your file explorer and looking at the path and name. A better way, in my opinion is to build them relatively.
+
+A note on file names, particularly for Windows users. In R the backslash `\` is a special character. If you have one in your file name, replace it with a forward slash `/`. It shouldn't be a problem for this example but it will help you out in the future.
+
+```{r}
+working_directory <- here()
+
+# I could have typed out the following line manually. Your path will be different.
+# filename_gdp <- "Users/neilcurrie/introduction-to-r/data/gdp.csv"
+
+filename_gdp <- paste(working_directory, "/data/gdp.csv", sep = "")
+filename_population <- paste0(working_directory, "/data/population.cv")
+
+print(filename_gdp)
+print(filename_population)
+```
+
+A good check to do is to see if the file you have created exists.
+
+```{r}
+file.exists(filename_gdp)
+file.exists(filename_population)
+```
+
+Let's fix that one.
+
+```{r}
+filename_population <- paste0(working_directory, "/data/population.csv")
+file.exists(filename_population)
+```
+
+Now we can read it the data files
+
+```{r}
+gdp_raw <- read_csv(filename_gdp)
+population_raw <- read_csv(filename_population)
+```
+
+## Manipulating data with dplyr
+
+```{r}
+summary(gdp_raw)
+```
+
+mutate, filter, group_by, summarise
+
+```{r}
+gdp_edited <- mutate(gdp_raw, year = str_sub(quarter, 1, 4))
+gdp_edited <- filter(gdp_edited, year <= 2020) # wont work
+gdp_edited <- mutate(gdp_edited, year = as.numeric(year))
+gdp_edited <- filter(gdp_edited, year <= 2020)
+```
+
+But there is a better way to write that out
+
+```{r}
+gdp_edited <- gdp_raw |> 
+  mutate(year = str_sub(quarter, 1, 4), year = as.numeric(year)) |> 
+  filter(year <= 2020) |>
+  group_by(year) |> 
+  summarise(annual_gdp = sum(gdp))
+```
+
+```{r}
+population_edited <- population_raw |> 
+  arrange(year) |> 
+  select(population)
+
+combined <- bind_cols(gdp_edited, population_edited) |> 
+  mutate(gdp_per_head = annual_gdp / population)
+
+```
+
+## Plotting data with ggplot2
+
+```{r}
+qplot(x = year, y = gdp_per_head, data = combined)
+
+qplot(x = year, y = gdp_per_head, data = combined, geom = "line", 
+      main = "GDP per head in the UK", xlab = "Year", ylab = "GDP per head")
+```
+
+## Output
+
+How to save those charts outside of R?
+
+```{r}
+filename_line_plot <- paste0(working_directory, "/output/gdp_per_head_line.png")
+ggsave(filename_line_plot)
+
+point_plot <- qplot(x = year, y = gdp_per_head, data = combined)
+
+filename_point_plot <- paste0(working_directory, "/output/gdp_per_head_point.png")
+
+ggsave(filename_point_plot, plot = point_plot)
+```
+
+Saving the data outside of R.
+
+```{r}
+filename_combined <- paste0(working_directory, "/output/combined.csv")
+
+write_csv(combined, file = filename_combined)
+```
