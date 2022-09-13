@@ -1,0 +1,114 @@
+---
+title: "Introduction to R"
+format: html
+editor: visual
+---
+
+## Overview
+
+This is a Quarto document - you may see people refer to this as a notebook. This type of file allows you to weave text, code, tables, and charts together.
+
+You can output a variety of file types including html and pdf for sharing with others. It has the file extension `.qmd`. This contrasts to the `.R` script file we saw previously which only contains code.
+
+To style the document we can use markdown, a lightweight markup language designed for quick, easy formatting. You can find more about markdown [here](https://quarto.org/docs/authoring/markdown-basics.html).
+
+The rest of this course will use this notebook.
+
+## Libraries
+
+```{r}
+
+```
+
+## Reading data with readr
+
+Constructing the file names.
+
+```{r}
+
+```
+
+A good check to do is to see if the file you have created exists.
+
+```{r}
+
+```
+
+Now we can read it the data files
+
+```{r}
+
+```
+
+Let's try some of those functions that the output suggests.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+We can use the viewer or the print function.
+
+```{r}
+
+```
+
+Using the summary function.
+
+```{r}
+
+```
+
+Turn off scientific notation.
+
+```{r}
+
+```
+
+Read in the population data
+
+```{r}
+
+```
+
+## Manipulating data with dplyr
+
+Manipulate the GDP data
+
+```{r}
+
+```
+
+Manipulate the population and combine.
+
+```{r}
+population_edited <- population_raw |> 
+  arrange(year) |> 
+  select(population)
+
+combined <- bind_cols(gdp_edited, population_edited) |> 
+  mutate(gdp_per_head = annual_gdp / population)
+```
+
+## Plotting data with ggplot2
+
+```{r}
+
+```
+
+## Output
+
+How to save those charts outside of R?
+
+```{r}
+
+```
+
+Saving the data outside of R.
+
+```{r}
+
+```

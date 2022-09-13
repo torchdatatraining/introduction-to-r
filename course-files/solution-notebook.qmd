@@ -6,7 +6,7 @@ editor: visual
 
 ## Overview
 
-This is a Quarto document - you may see people refer to this as a notebook. This type of file allows you to weave text, code, tables, and charts together. 
+This is a Quarto document - you may see people refer to this as a notebook. This type of file allows you to weave text, code, tables, and charts together.
 
 You can output a variety of file types including html and pdf for sharing with others. It has the file extension `.qmd`. This contrasts to the `.R` script file we saw previously which only contains code.
 
@@ -16,7 +16,7 @@ The rest of this course will use this notebook.
 
 ## Libraries
 
-We previously installed three packages: readr, dplyr and ggplot2. 
+We previously installed three packages: readr, dplyr and ggplot2.
 
 But what do they do?
 
@@ -38,7 +38,7 @@ A key part of analysis is obtaining data.
 
 Inside the data folder I have placed two data files `gdp.csv` and `population.csv`
 
-If you aren't familar with them, comma separated value (or CSV for short) files are one the most common data file types around. They are tabular, organised into rows and columns. Each entry is separated by a comma. You can open them in all sorts of programs including a text editor like notepad on windows or spreadsheet software like Excel.
+If you aren't familiar with them, comma separated value (or CSV for short) files are one the most common data file types around. They are tabular, organised into rows and columns. Each entry is separated by a comma. You can open them in all sorts of programs including a text editor like notepad on windows or spreadsheet software like Excel.
 
 And we can use them in R.
 
@@ -95,14 +95,12 @@ The summary function can be useful to build up a more informed picture of a data
 summary(gdp_raw)
 ```
 
-To turn off scientific notation set `scipen = 999` in the `options` function. To
-reset this behavior use `scipen = 0` and re-run.
+To turn off scientific notation set `scipen = 999` in the `options` function. To reset this behavior use `scipen = 0` and re-run.
 
 ```{r}
 options(scipen = 999)
 summary(gdp_raw)
 ```
-
 
 Let's read in the population data now, inspect the object in the viewer and use the summary function to obtain some more information.
 
@@ -113,9 +111,7 @@ summary(population_raw)
 
 ## Manipulating data with dplyr
 
-Our ultimate objective will be to produce a line chart which shows GDP per head
-from 1980 to 2020. Before we get to that point we will need to manipulate the 
-data into the correct format using functions from the `dplyr` package.
+Our ultimate objective will be to produce a line chart which shows GDP per head from 1980 to 2020. Before we get to that point we will need to manipulate the data into the correct format using functions from the `dplyr` package.
 
 ```{r}
 gdp_edited <- mutate(gdp_raw, year = substr(quarter, 1, 4))
@@ -187,5 +183,3 @@ write_csv(combined, file = filename_combined)
 ```
 
 Finally, use the Render button to create a final, dynamic notebook you could share with someone. In this case it is HTML format so you can open it in any web browser. Other formats, like PDF, are possible too.
-
-
